@@ -31,7 +31,7 @@ public class TextGameApplication {
 
         fullHealth = 10;
         playerHealth = 10;
-        weaponName = "Rusty knife";
+        weaponName = "Knife";
 
         System.out.println("Your health: " + playerHealth + "/" + fullHealth);
         System.out.println("Your current weapon: " + weaponName);
@@ -152,7 +152,7 @@ public class TextGameApplication {
 
     public void goEast() {
 
-        item = "Magic sword";
+        item = "Sword";
         System.out.println("\n------------------------------------\n");
         System.out.println("You walk into the forest. While walking on the path you find a " + item + "!");
         String equipItem = "Would you like to equip the item? \n" +
@@ -193,8 +193,52 @@ public class TextGameApplication {
 
     public void goWest() {
 
-        System.out.println("You find yourself face to face with the monster of the forest");
+        System.out.println("\n------------------------------------\n");
+        System.out.println("You find yourself face to face with the monster of the forest...");
+        System.out.println("\n------------------------------------\n");
 
+        String monsterOptions = "What do you do? \n" +
+                "1. Attack?\n" +
+                "2. Run?\n" +
+                "3. Hide?";
+        System.out.println(monsterOptions);
+
+        int choice;
+        boolean valid = false;
+        do {
+            while (!scanner.hasNextInt()) {
+                System.out.println("\n------------------------------------\n");
+                System.out.println("That's not a number!");
+                System.out.println("\n------------------------------------\n");
+                System.out.println(monsterOptions);
+                scanner.next();
+            }
+            choice = scanner.nextInt();
+            if (choice == 1) {
+                valid = true;
+                fight();
+            } else if (choice == 2) {
+                valid = true;
+                crossroads();
+            } else if (choice == 3) {
+                valid = true;
+                townGate();
+            } else {
+                System.out.println("\n------------------------------------\n");
+                System.out.println("That is not a valid choice... \n" + monsterOptions);
+                System.out.println("\n------------------------------------\n");
+            }
+        } while (!valid);
+
+    }
+
+    public void fight() {
+        int weaponDamage;
+        if(weaponName.equalsIgnoreCase("knife")) {
+            weaponDamage = new java.util.Random().nextInt(5);
+        } else if(weaponName.equalsIgnoreCase("sword")) {
+            weaponDamage = new java.util.Random().nextInt(8);
+        }
 
     }
 
