@@ -8,10 +8,16 @@ import java.util.Scanner;
 public class TextGameApplication {
 
     Scanner scanner = new Scanner(System.in);
-    int fullHealth;
-    int playerHealth;
+    int playerFullHP;
+    int playerHP;
+    int monsterHP;
+    int monsterFullHP;
     String weaponName;
     String item;
+    int playerDamage;
+    int monsterDamage;
+    boolean chest = false;
+    boolean goldTablet = false;
 
     public static void main(String[] args) {
 
@@ -29,11 +35,13 @@ public class TextGameApplication {
         playerName = scanner.nextLine();
         System.out.println("Nice to meet you " + playerName + ". Lets start your adventure...");
 
-        fullHealth = 10;
-        playerHealth = 10;
+        playerFullHP = 10;
+        playerHP = 10;
+        monsterHP = 30;
+        monsterFullHP = 30;
         weaponName = "Knife";
 
-        System.out.println("Your health: " + playerHealth + "/" + fullHealth);
+        System.out.println("Your health: " + playerHP + "/" + playerFullHP);
         System.out.println("Your current weapon: " + weaponName);
 
         System.out.println("\n------------------------------------\n");
@@ -64,24 +72,28 @@ public class TextGameApplication {
             choice = scanner.nextInt();
             if (choice == 1) {
                 System.out.println("\n------------------------------------\n");
-                System.out.println("Guard: Greetings stranger, I'm sorry but I cannot allow strangers into the town.\n" +
-                        "If you defeat the monster of the forest our town leaders would be ever grateful. I am sure you would be rewarded");
-                System.out.println("\n------------------------------------\n");
-                System.out.println(gateOptions);
-                scanner.next();
+                if(goldTablet) {
+                    System.out.println("Guard: You have returned with the lost gold tablet stolen by the monster of the forest! You must come in and show this to our elders");
+                } else {
+                    System.out.println("Guard: Greetings stranger, I'm sorry but I cannot allow strangers into the town.\n" +
+                            "If you defeat the monster of the forest our town elders would be ever grateful.");
+                    System.out.println("\n------------------------------------\n");
+                    System.out.println(gateOptions);
+                    scanner.next();
+                }
+
             } else if (choice == 2) {
-                playerHealth = playerHealth - 1;
+                playerHP = playerHP - 1;
                 System.out.println("\n------------------------------------\n");
                 System.out.println("The guard easily dodges your attack and throws you back... \n" +
                         "You receive 1 damage...\n" +
-                        "Your HP is now " + playerHealth + "/" + fullHealth);
+                        "Your HP is now " + playerHP + "/" + playerFullHP);
                 System.out.println("\n------------------------------------\n");
                 System.out.println(gateOptions);
             } else if (choice == 3) {
                 valid = true;
                 System.out.println("\n------------------------------------\n");
                 System.out.println("You turn around and walk North");
-                System.out.println("\n------------------------------------\n");
                 crossroads();
             } else {
                 System.out.println("\n------------------------------------\n");
@@ -140,11 +152,11 @@ public class TextGameApplication {
 
     public void goNorth() {
 
-        playerHealth = fullHealth;
+        playerHP = playerFullHP;
         System.out.println("\n------------------------------------\n");
 
         System.out.println("You find a river you cannot cross. You drink from the river to restore your health.\n" +
-                "Your HP is " + playerHealth + "/" + fullHealth + "\n" +
+                "Your HP is " + playerHP + "/" + playerFullHP + "\n" +
                 "After resting by the river you return to the crossroads...");
         crossroads();
 
@@ -193,53 +205,140 @@ public class TextGameApplication {
 
     public void goWest() {
 
-        System.out.println("\n------------------------------------\n");
-        System.out.println("You find yourself face to face with the monster of the forest...");
-        System.out.println("\n------------------------------------\n");
+        if (monsterHP < 1) {
+            win();
+        } else {
+            System.out.println("\n------------------------------------\n");
+            System.out.println("You find yourself face to face with the monster of the forest...");
+            System.out.println("\n------------------------------------\n");
 
-        String monsterOptions = "What do you do? \n" +
-                "1. Attack?\n" +
-                "2. Run?\n" +
-                "3. Hide?";
-        System.out.println(monsterOptions);
+            String monsterOptions = "What do you do? \n" +
+                    "1. Attack?\n" +
+                    "2. Run?\n" +
+                    "3. Hide?";
+            System.out.println(monsterOptions);
 
-        int choice;
-        boolean valid = false;
-        do {
-            while (!scanner.hasNextInt()) {
-                System.out.println("\n------------------------------------\n");
-                System.out.println("That's not a number!");
-                System.out.println("\n------------------------------------\n");
-                System.out.println(monsterOptions);
-                scanner.next();
-            }
-            choice = scanner.nextInt();
-            if (choice == 1) {
-                valid = true;
-                fight();
-            } else if (choice == 2) {
-                valid = true;
-                crossroads();
-            } else if (choice == 3) {
-                valid = true;
-                townGate();
-            } else {
-                System.out.println("\n------------------------------------\n");
-                System.out.println("That is not a valid choice... \n" + monsterOptions);
-                System.out.println("\n------------------------------------\n");
-            }
-        } while (!valid);
+            int choice;
+            boolean valid = false;
+            do {
+                while (!scanner.hasNextInt()) {
+                    System.out.println("\n------------------------------------\n");
+                    System.out.println("That's not a number!");
+                    System.out.println("\n------------------------------------\n");
+                    System.out.println(monsterOptions);
+                    scanner.next();
+                }
+                choice = scanner.nextInt();
+                if (choice == 1) {
+                    valid = true;
+                    fight();
+                } else if (choice == 2) {
+                    valid = true;
+                    crossroads();
+                } else if (choice == 3) {
+                    valid = true;
+                    System.out.println("\n------------------------------------\n");
+                    System.out.println("The monster finds you and attacks");
+                    monsterDamage = 0;
+                    monsterDamage = new java.util.Random().nextInt(5);
+                    System.out.println("The monsters HP is now " + monsterHP + "/" + monsterFullHP);
+                    playerHP = playerHP - monsterDamage;
+                    if (playerHP > 0) {
+                        System.out.println("The monster strikes back...\n" +
+                                "Your HP is now " + playerHP + "/" + playerFullHP);
+                        goWest();
+                    } else {
+                        dead();
+                    }
+                } else {
+                    System.out.println("\n------------------------------------\n");
+                    System.out.println("That is not a valid choice... \n" + monsterOptions);
+                    System.out.println("\n------------------------------------\n");
+                }
+            } while (!valid);
+        }
 
     }
 
     public void fight() {
-        int weaponDamage;
+
         if(weaponName.equalsIgnoreCase("knife")) {
-            weaponDamage = new java.util.Random().nextInt(5);
+            playerDamage = new java.util.Random().nextInt(100);
         } else if(weaponName.equalsIgnoreCase("sword")) {
-            weaponDamage = new java.util.Random().nextInt(8);
+            playerDamage = new java.util.Random().nextInt(8);
+        } else {
+            weaponName = "hands";
+            playerDamage = new java.util.Random().nextInt(2);
         }
 
+        System.out.println("You attack the monster with your " + weaponName + " and delt " + playerDamage + " damage!");
+
+        monsterHP = monsterHP - playerDamage;
+
+        if(monsterHP < 1) {
+            win();
+        } else {
+            monsterDamage = 0;
+            monsterDamage = new java.util.Random().nextInt(8);
+            System.out.println("The monsters HP is now " + monsterHP + "/" + monsterFullHP);
+            playerHP = playerHP - monsterDamage;
+            if (playerHP > 0) {
+                System.out.println("The monster strikes back...\n" +
+                        "Your HP is now " + playerHP + "/" + playerFullHP);
+                goWest();
+            } else {
+                dead();
+            }
+        }
+    }
+
+    public void dead() {
+
+        System.out.println("You have been defeated. \n" +
+                "GAME OVER");
+
+    }
+
+    public void win() {
+
+        chest = true;
+        System.out.println("\n------------------------------------\n");
+        System.out.println("You have defeated the monster\n" +
+                "You find a chest behind the monster");
+        String chestOption = "Do you open the chest? \n" +
+                "y/N";
+
+        System.out.println(chestOption);
+
+        String choice;
+        boolean valid = false;
+        do {
+            while (!scanner.hasNext()) {
+                System.out.println("\n------------------------------------\n");
+                System.out.println("That's not a number!");
+                System.out.println("\n------------------------------------\n");
+                System.out.println(chestOption);
+                scanner.next();
+            }
+            choice = scanner.nextLine();
+            if (choice.equalsIgnoreCase("y")) {
+                valid = true;
+                goldTablet = true;
+                System.out.println("\n------------------------------------\n");
+                System.out.println("You open the chest to find a gold tablet with strange writing on it\n" +
+                        "You should take the tablet back to town...\n" +
+                        "You turn around and head back to the crossroads.");
+                crossroads();
+            } else if (choice.equalsIgnoreCase("n")) {
+                valid = true;
+                System.out.println("\n------------------------------------\n");
+                System.out.println("You leave the chest alone and head back to the crossroads");
+                crossroads();
+            } else {
+                System.out.println("\n------------------------------------\n");
+                System.out.println("That is not a valid choice... \n" + chestOption);
+            }
+        } while (!valid);
     }
 
 }
