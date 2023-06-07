@@ -19,14 +19,14 @@ public class TextGameApplication {
     boolean chest = false;
     boolean goldTablet = false;
 
-    public static void main(String[] args) {
-
-        TextGameApplication game = new TextGameApplication();
-        game.playerSetup();
-
-        game.townGate();
-
-    }
+//    public static void main(String[] args) {
+//
+//        TextGameApplication game = new TextGameApplication();
+//        game.playerSetup();
+//
+//        game.townGate();
+//
+//    }
 
     public void playerSetup() {
 
