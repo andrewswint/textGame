@@ -7,6 +7,11 @@ import java.awt.event.ActionListener;
 
 public class gui {
 
+    int playerFullHP;
+    int playerHP;
+
+    String weaponName;
+
     JFrame window;
     Container container;
     JPanel titlePanel, startButtonPanel, storyPanel, choiceButtonPanel, playerInfoPanel;
@@ -15,8 +20,6 @@ public class gui {
     JTextArea storyText;
 
     TitleScreenHandler titleScreenHandler = new TitleScreenHandler();
-
-    TextGameApplication textGameApplication = new TextGameApplication();
 
     Font titleFont = new Font("Times New Roman", Font.PLAIN, 85);
     Font regularFont = new Font("Times New Roman", Font.PLAIN, 35);
@@ -67,14 +70,16 @@ public class gui {
         startButtonPanel.setVisible(false);
 
         playerInfoPanel = new JPanel();
-        playerInfoPanel.setBounds(50,50,800,150);
+        playerInfoPanel.setBounds(50,50,600,150);
         playerInfoPanel.setBackground(Color.black);
         playerInfoPanel.setLayout(new GridLayout(1,4));
+
+
         hpLabel = new JLabel("HP: ");
         hpLabel.setFont(regularFont);
         hpLabel.setForeground(Color.green);
         playerInfoPanel.add(hpLabel);
-        hpLabelNumber = new JLabel("100");
+        hpLabelNumber = new JLabel();
         hpLabelNumber.setFont(regularFont);
         hpLabelNumber.setForeground(Color.green);
         playerInfoPanel.add(hpLabelNumber);
@@ -82,10 +87,11 @@ public class gui {
         weaponLabel.setFont(regularFont);
         weaponLabel.setForeground(Color.green);
         playerInfoPanel.add(weaponLabel);
-        weaponLabelName = new JLabel("Knife");
+        weaponLabelName = new JLabel();
         weaponLabelName.setFont(regularFont);
         weaponLabelName.setForeground(Color.green);
         playerInfoPanel.add(weaponLabelName);
+        container.add(playerInfoPanel);
         container.add(playerInfoPanel);
 
         storyPanel = new JPanel();
@@ -131,10 +137,20 @@ public class gui {
         choice4.setFont(regularFont);
         choiceButtonPanel.add(choice4);
 
-        textGameApplication.playerSetup();
+        playerSetup();
 
         container.validate();
 
+    }
+
+    public void playerSetup() {
+        playerFullHP = 10;
+        playerHP = 10;
+        weaponName = "Knife";
+
+        hpLabelNumber.setText(playerHP + "/" + playerFullHP);
+
+        weaponLabelName.setText(weaponName);
     }
 
     public class TitleScreenHandler implements ActionListener {
