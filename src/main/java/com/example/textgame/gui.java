@@ -9,9 +9,9 @@ public class gui {
 
     JFrame window;
     Container container;
-    JPanel titlePanel, startButtonPanel, storyPanel;
+    JPanel titlePanel, startButtonPanel, storyPanel, choiceButtonPanel;
     JLabel titleLabel;
-    JButton startButton;
+    JButton startButton, choice1, choice2, choice3, choice4;
     JTextArea storyText;
 
     TitleScreenHandler titleScreenHandler = new TitleScreenHandler();
@@ -65,17 +65,47 @@ public class gui {
         startButtonPanel.setVisible(false);
 
         storyPanel = new JPanel();
-        storyPanel.setBounds(100,500,600,250);
-        storyPanel.setBackground(Color.green);
+        storyPanel.setBounds(100,100,600,250);
+        storyPanel.setBackground(Color.black);
         container.add(storyPanel);
 
-        storyText = new JTextArea();
-        storyText.setBounds(100,500,600,250);
+        storyText = new JTextArea("This is the story and more and more and more and more and more");
+        storyText.setBounds(100,100,600,250);
         storyText.setBackground(Color.black);
         storyText.setForeground(Color.green);
         storyText.setFont(regularFont);
         storyText.setLineWrap(true);
         storyPanel.add(storyText);
+
+        choiceButtonPanel = new JPanel();
+        choiceButtonPanel.setBounds(250,350,300,150);
+        choiceButtonPanel.setBackground(Color.black);
+        choiceButtonPanel.setLayout(new GridLayout(4,1));
+        container.add(choiceButtonPanel);
+
+        choice1 = new JButton("choice 1");
+        choice1.setBackground(Color.black);
+        choice1.setForeground(Color.green);
+        choice1.setFont(regularFont);
+        choiceButtonPanel.add(choice1);
+
+        choice2 = new JButton("choice 2");
+        choice2.setBackground(Color.black);
+        choice2.setForeground(Color.green);
+        choice2.setFont(regularFont);
+        choiceButtonPanel.add(choice2);
+
+        choice3 = new JButton("choice 3");
+        choice3.setBackground(Color.black);
+        choice3.setForeground(Color.green);
+        choice3.setFont(regularFont);
+        choiceButtonPanel.add(choice3);
+
+        choice4 = new JButton("choice 4");
+        choice4.setBackground(Color.black);
+        choice4.setForeground(Color.green);
+        choice4.setFont(regularFont);
+        choiceButtonPanel.add(choice4);
 
         container.validate();
 
