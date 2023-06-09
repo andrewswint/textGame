@@ -9,12 +9,14 @@ public class gui {
 
     JFrame window;
     Container container;
-    JPanel titlePanel, startButtonPanel, storyPanel, choiceButtonPanel;
-    JLabel titleLabel;
+    JPanel titlePanel, startButtonPanel, storyPanel, choiceButtonPanel, playerInfoPanel;
+    JLabel titleLabel, hpLabel, hpLabelNumber, weaponLabel, weaponLabelName;
     JButton startButton, choice1, choice2, choice3, choice4;
     JTextArea storyText;
 
     TitleScreenHandler titleScreenHandler = new TitleScreenHandler();
+
+    TextGameApplication textGameApplication = new TextGameApplication();
 
     Font titleFont = new Font("Times New Roman", Font.PLAIN, 85);
     Font regularFont = new Font("Times New Roman", Font.PLAIN, 35);
@@ -27,7 +29,7 @@ public class gui {
     public void game() {
 
         window = new JFrame();
-        window.setSize(800,600);
+        window.setSize(800,800);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.getContentPane().setBackground(Color.black);
         window.setLayout(null);
@@ -43,7 +45,7 @@ public class gui {
         titlePanel.add(titleLabel);
 
         startButtonPanel = new JPanel();
-        startButtonPanel.setBounds(300,400,200,100);
+        startButtonPanel.setBounds(300,500,200,100);
         startButtonPanel.setBackground(Color.black);
 
         startButton = new JButton("Begin");
@@ -64,13 +66,35 @@ public class gui {
         titlePanel.setVisible(false);
         startButtonPanel.setVisible(false);
 
+        playerInfoPanel = new JPanel();
+        playerInfoPanel.setBounds(50,50,800,150);
+        playerInfoPanel.setBackground(Color.black);
+        playerInfoPanel.setLayout(new GridLayout(1,4));
+        hpLabel = new JLabel("HP: ");
+        hpLabel.setFont(regularFont);
+        hpLabel.setForeground(Color.green);
+        playerInfoPanel.add(hpLabel);
+        hpLabelNumber = new JLabel("100");
+        hpLabelNumber.setFont(regularFont);
+        hpLabelNumber.setForeground(Color.green);
+        playerInfoPanel.add(hpLabelNumber);
+        weaponLabel = new JLabel("Weapon: ");
+        weaponLabel.setFont(regularFont);
+        weaponLabel.setForeground(Color.green);
+        playerInfoPanel.add(weaponLabel);
+        weaponLabelName = new JLabel("Knife");
+        weaponLabelName.setFont(regularFont);
+        weaponLabelName.setForeground(Color.green);
+        playerInfoPanel.add(weaponLabelName);
+        container.add(playerInfoPanel);
+
         storyPanel = new JPanel();
-        storyPanel.setBounds(100,100,600,250);
+        storyPanel.setBounds(100,200,600,250);
         storyPanel.setBackground(Color.black);
         container.add(storyPanel);
 
         storyText = new JTextArea("This is the story and more and more and more and more and more");
-        storyText.setBounds(100,100,600,250);
+        storyText.setBounds(100,100,600,400);
         storyText.setBackground(Color.black);
         storyText.setForeground(Color.green);
         storyText.setFont(regularFont);
@@ -78,7 +102,7 @@ public class gui {
         storyPanel.add(storyText);
 
         choiceButtonPanel = new JPanel();
-        choiceButtonPanel.setBounds(250,350,300,150);
+        choiceButtonPanel.setBounds(250,550,300,150);
         choiceButtonPanel.setBackground(Color.black);
         choiceButtonPanel.setLayout(new GridLayout(4,1));
         container.add(choiceButtonPanel);
@@ -106,6 +130,8 @@ public class gui {
         choice4.setForeground(Color.green);
         choice4.setFont(regularFont);
         choiceButtonPanel.add(choice4);
+
+        textGameApplication.playerSetup();
 
         container.validate();
 
